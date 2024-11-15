@@ -1,0 +1,131 @@
+/* ----- GENERAL ----- */
+* {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ----- MAIN-TABLE ----- */
+
+table.main-table td {
+	padding: 0 50px 40px 0;
+	vertical-align: top;
+}
+
+/* ----- FIELDSET ----- */
+
+fieldset {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 20px 20px;
+	float: left;
+}
+legend {
+	font-size: x-large;
+	font-weight: bold;
+	font-variant: small-caps;
+}
+
+/* ----- FIELDS ----- */
+
+.field {
+	clear: both;
+	text-align: right;
+	line-height: 28px;
+	margin-bottom: 10px;
+	vertical-align: bottom;
+}
+label {
+	float: left;
+	padding-right: 20px;
+}
+input[type="text"] {
+	font-size: medium;
+	padding: 3px;
+	width: 400px;
+}
+hr {
+	margin: 15px 0;
+}
+button {
+	font-size: 14px;
+	font-variant: small-caps;
+}
+.status {
+	display: inline-block;
+	margin-left: 20px;
+}
+.check-status {
+	margin-top: 15px;
+}
+
+/* ----- OUTPUT-TABLE ----- */
+
+.scroll-tbody {
+	max-height: 75vh;
+	overflow-x: auto;
+}
+.output-table table {
+	width: 100%;
+	table-layout: fixed;
+	border: none;
+	border-collapse: collapse;
+	vertical-align: top;
+	font-size: medium;
+}
+.output-table caption {
+	font-size: x-large;
+	font-weight: bold;
+	font-variant: small-caps;
+	margin-bottom: 20px;
+}
+.output-table thead th {
+	font-weight: bold;
+	text-align: left;
+	border: none;
+	padding: 10px 25px;
+	background: #d8d8d8;
+}
+.output-table thead tr th:nth-child(1) {
+	width: 10%;
+}
+.output-table thead tr th:nth-child(n+2) {
+	width: 30%;
+}
+.output-table thead tr th:first-child {
+	border-radius: 8px 0 0 8px;
+}
+.output-table thead tr th:last-child {
+	border-radius: 0 8px 8px 0;
+}
+.output-table tbody td {
+	text-align: left;
+	border: none;
+	padding: 10px 25px;
+	vertical-align: top;
+}
+.output-table tbody tr:nth-child(even){
+	background: #f3f3f3;
+}
+.output-table tbody tr td:nth-child(1) {
+	width: 10%;
+}
+.output-table tbody tr td:nth-child(n+2) {
+	width: 30%;
+}
+.output-table tbody tr td:first-child {
+	border-radius: 8px 0 0 8px;
+}
+.output-table tbody tr td:last-child {
+	border-radius: 0 8px 8px 0;
+}
+/* Scroll styles */
+::-webkit-scrollbar {
+	width: 6px;
+} 
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 4px 4px 4px 4px;
+} 
+::-webkit-scrollbar-thumb {
+	box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 4px 4px 4px 4px;
+}

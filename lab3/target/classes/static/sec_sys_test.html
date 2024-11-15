@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html ng-app="SecSysApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Система безопасности предприятия</title>
+
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"/>
+
+    <script src="../static/js/angular.min.js" th:src="@{js/angular.min.js}"></script>
+</head>
+
+<body>
+    <h1>Система безопасности предприятия</h1>
+    <div class="input">
+        <table>
+            <tr>
+                <!-- Форма добавления сотрудника -->
+                <td>
+                    <div ng-controller="EmployeeController">
+                        <form name="newEmployeeForm">
+                            <fieldset>
+                                <legend>Добавить/изменить сотрудника</legend>
+                                <div class="field">
+                                    <label for="employeeID">ID:</label>
+                                    <input type="text" id="employeeID" name="employeeID"
+                                        ng-model="newEmployee.id" required placeholder="0000000"
+                                        pattern="^\d{1,7}$">
+                                </div>
+                                <div class="field">
+                                    <label for="name">Имя:</label>
+                                    <input type="text" id="name" name="name"
+                                        ng-model="newEmployee.name" required
+                                        pattern="^[a-zA-Zа-яА-Я]+([\s\-][a-zA-Zа-яА-Я]+)*$">
+                                </div>
+                                <div class="field">
+                                    <label for="department">Отдел:</label>
+                                    <input type="text" id="department" name="department"
+                                        ng-model="newEmployee.department" required
+                                        pattern="^[a-zA-Zа-яА-Я\d]+([\s\-][a-zA-Zа-яА-Я\d]+)*$">
+                                </div>
+                                <div class="field">
+                                    <label for="position">Должность:</label>
+                                    <input type="text" id="position" name="position"
+                                        ng-model="newEmployee.position" required
+                                        pattern="^[a-zA-Zа-яА-Я\d]+([\s\-][a-zA-Zа-яА-Я\d]+)*$">
+                                </div>
+                                <hr>
+                                <div class="status-container">
+                                    <button type="submit" name="admin_submit" value="add_employee"
+                                        ng-click="addEmployee(newEmployee, newEmployeeForm)">Добавить</button>
+                                    <div class="status" ng-bind="add_status">{{add_status}}</div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+                <!-- Форма добавления помещения -->
+                <td>
+                    <div ng-controller="RoomController">
+                        <form name="newRoomForm">
+                            <fieldset>
+                                <legend>Добавить/изменить помещение</legend>
+                                <div class="field">
+                                    <label for="roomID">ID:</label>
+                                    <input type="text" id="roomID" name="roomID"
+                                        ng-model="newRoom.id" required placeholder="0000000"
+                                        pattern="^\d{1,7}$">
+                                </div>
+                                <div class="field">
+                                    <label for="roomName">Название:</label>
+                                    <input type="text" id="roomName" name="roomName"
+                                        ng-model="newRoom.name" required
+                                        pattern="^[a-zA-Zа-яА-Я\d]+([\s\-][a-zA-Zа-яА-Я\d]+)*$">
+                                </div>
+                                <div class="field">
+                                    <label for="roomDepartment">Отдел:</label>
+                                    <input type="text" id="roomDepartment" name="roomDepartment"
+                                        ng-model="newRoom.department" required
+                                        pattern="^[a-zA-Zа-яА-Я\d]+([\s\-][a-zA-Zа-яА-Я\d]+)*$">
+                                </div>
+                                <div class="field">
+                                    <label for="roomCapacity">Вместимость:</label>
+                                    <input type="text" id="roomCapacity" name="roomCapacity"
+                                        ng-model="newRoom.capacity" required pattern="^\d+$">
+                                </div>
+                                <hr>
+                                <div class="status-container">
+                                    <button type="submit" name="admin_submit" value="add_room"
+                                        ng-click="addRoom(newRoom, newRoomForm)">Добавить</button>
+                                    <div class="status" ng-bind="add_status">{{add_status}}</div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <!-- Форма удаления сотрудника -->
+                <td>
+                    <div ng-controller="EmployeeController">
+                        <form>
+                            <fieldset>
+                                <legend>Удалить сотрудника</legend>
+                                <div class="field">
+                                    <label for="deleteEmployeeID">ID сотрудника:</label>
+                                    <input type="text" id="deleteEmployeeID" name="deleteEmployeeID"
+                                        ng-model="id" required
+                                        placeholder="0000000" pattern="^\d{1,7}$">
+                                </div>
+                                <hr>
+                                <div class="status-container">
+                                    <button type="submit" name="admin_submit" value="del_employee"
+                                        ng-click="deleteEmployee(id)">Удалить</button>
+                                    <div class="status" ng-bind="del_status">{{del_status}}</div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+                <!-- Форма удаления помещения -->
+                <td>
+                    <div ng-controller="RoomController">
+                        <form>
+                            <fieldset>
+                                <legend>Удалить помещение</legend>
+                                <div class="field">
+                                    <label for="deleteRoomID">ID помещения:</label>
+                                    <input type="text" id="deleteRoomID" name="deleteRoomID" 
+                                        g-model="id" required placeholder="0000000"
+                                        pattern="^\d{1,7}$">
+                                </div>
+                                <hr>
+                                <div class="status-container">
+                                    <button type="submit" name="admin_submit" value="del_room"
+                                        ng-click="deleteRoom(id)">Удалить</button>
+                                    <div class="status" ng-bind="del_status">{{del_status}}</div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <!-- Форма выдачи доступпа -->
+                <td>
+                    <div>
+                        <form name="grantAccessForm">
+                            <fieldset>
+                                <legend>Выдать доступ сотруднику</legend>
+                                <div class="field">
+                                    <label for="accessEmployeeID">ID сотрудника:</label>
+                                    <input type="text" id="accessEmployeeID" name="accessEmployeeID" required
+                                        placeholder="0000000" pattern="^\d{1,7}$">
+                                </div>
+                                <div class="field">
+                                    <label for="accessRoomID">ID помещения:</label>
+                                    <input type="text" id="accessRoomID" name="accessRoomID" required placeholder="0000000"
+                                        pattern="^\d{1,7}$">
+                                </div>
+                                <hr>
+                                <div class="status-container">
+                                    <button type="submit" name="admin_submit" value="grant_access">Выдать доступ</button>
+                                    <div class="status"><!-- status_grant_access --></div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+                <!-- Форма отзыва доступа -->
+                <td>
+                    <div>
+                        <form>
+                            <fieldset>
+                                <legend>Отозвать доступ у сотрудника</legend>
+                                <div class="field">
+                                    <label for="revokeEmployeeID">ID сотрудника:</label>
+                                    <input type="text" id="revokeEmployeeID" name="revokeEmployeeID" required
+                                        placeholder="0000000" pattern="^\d{1,7}$">
+                                </div>
+                                <div class="field">
+                                    <label for="revokeRoomID">ID помещения:</label>
+                                    <input type="text" id="revokeRoomID" name="revokeRoomID" required placeholder="0000000"
+                                        pattern="^\d{1,7}$">
+                                </div>
+                                <hr>
+                                <div class="status-container">
+                                    <button type="submit" name="admin_submit" value="revoke_access">Отозвать доступ</button>
+                                    <div class="status"><!-- status_revoke_access --></div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <!-- Форма проверки доступпа -->
+                <td colspan="2">
+                    <div>
+                        <form>
+                            <fieldset class="check-access-fs">
+                                <legend>Проверить доступ сотрудника</legend>
+                                <div class="check-access-input">
+                                    <div class="field">
+                                        <label for="checkEmployeeID">ID сотрудника:</label>
+                                        <input type="text" id="checkEmployeeID" name="checkEmployeeID" required
+                                            placeholder="0000000" pattern="^\d{1,7}$">
+                                    </div>
+                                    <div class="field">
+                                        <label for="checkRoomID">ID помещения:</label>
+                                        <input type="text" id="checkRoomID" name="checkRoomID" required placeholder="0000000"
+                                            pattern="^\d{1,7}$">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="status-container">
+                                    <button type="submit" name="user_submit" value="check_access">Проверить доступ</button>
+                                    <div class="status"><!-- status_check_access --></div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="output">
+        <!-- Таблица сотрудников -->
+        <td>
+            <div class="output-table" ng-controller="EmployeeController">
+                <table>
+                    <caption>Сотрудники</caption>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Имя</th>
+                            <th>Отдел</th>
+                            <th>Должность</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="scroll-tbody" ng-controller="getEmployees">
+                    <table>
+                        <tbody>
+                            <tr ng-repeat="employee in employeesList">
+                                <td>{{employee.id}}</td>
+                                <td>{{employee.name}}</td>
+                                <td>{{employee.department}}</td>
+                                <td>{{employee.position}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </td>
+        <!-- Таблица помещений -->
+        <td>
+            <div class="output-table" ng-controller="RoomController">
+                <table>
+                    <caption>Помещения</caption>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Отдел</th>
+                            <th>Вместимость</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="scroll-tbody">
+                    <table>
+                        <tbody>
+                            <tr ng-repeat="room in roomsList">
+                                <td>{{room.id}}</td>
+                                <td>{{room.name}}</td>
+                                <td>{{room.department}}</td>
+                                <td>{{room.capacity}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </td>
+    </div>
+    <script src="../static/js/SecSys.js" th:src="@{js/SecSys.js}"></script>
+</body>
+
+</html>

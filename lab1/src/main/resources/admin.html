@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Управление сотрудниками и помещениями</title>
+	<link rel="stylesheet" type="text/css" href="/styles/styles.css">
+</head>
+
+<body>
+	<h1>Управление сотрудниками и помещениями</h1>
+	<table class="main-table">
+		<tr>
+			<td>
+				<!-- Форма добавления сотрудника -->
+				<form method="post">
+                    <fieldset>
+                        <legend>Добавить сотрудника</legend>
+                        <div class="field">
+                            <label for="employeeID">ID:</label>
+                            <input type="text" id="employeeID" name="employeeID" required
+                            placeholder="0000000" pattern="^\d{1,7}$">
+                        </div>
+                        <div class="field">
+                            <label for="name">Имя:</label>
+                            <input type="text" id="name" name="name" required
+                            pattern="^[a-zA-Zа-яА-Я]+([\s\-][a-zA-Zа-яА-Я]+)*$">
+                        </div>
+                        <div class="field">
+                            <label for="department">Отдел:</label>
+                            <input type="text" id="department" name="department" required
+                            pattern="^[a-zA-Zа-яА-Я\d]+([\s\-][a-zA-Zа-яА-Я\d]+)*$">
+                        </div>
+                        <div class="field">
+                            <label for="position">Должность:</label>
+                            <input type="text" id="position" name="position" required
+                            pattern="^[a-zA-Zа-яА-Я\d]+([\s\-][a-zA-Zа-яА-Я\d]+)*$">
+                        </div>
+                        <hr>
+                        <div class="btn-status">
+                            <button type="submit" name="admin_submit" value="add_employee">Добавить</button>
+                            <div class="status"><!-- status_add_employee --></div>
+                        </div>
+                    </fieldset>
+				</form>
+			</td>
+			<td>
+				<!-- Форма добавления помещения -->
+                <form method="post">
+                    <fieldset>
+                        <legend>Добавить помещение</legend>
+                        <div class="field">
+                            <label for="roomID">ID:</label>
+                            <input type="text" id="roomID" name="roomID" required
+                            placeholder="0000000" pattern="^\d{1,7}$">
+                        </div>
+                        <div class="field">
+                            <label for="roomName">Название:</label>
+                            <input type="text" id="roomName" name="roomName" required
+                            pattern="^[a-zA-Zа-яА-Я\d]+([\s\-][a-zA-Zа-яА-Я\d]+)*$">
+                        </div>
+                        <div class="field">
+                            <label for="roomDepartment">Отдел:</label>
+                            <input type="text" id="roomDepartment" name="roomDepartment" required
+                            pattern="^[a-zA-Zа-яА-Я\d]+([\s\-][a-zA-Zа-яА-Я\d]+)*$">
+                        </div>
+                        <div class="field">
+                            <label for="roomCapacity">Вместимость:</label>
+                            <input type="text" id="roomCapacity" name="roomCapacity" required
+                            pattern="^\d+$">
+                        </div>
+                        <hr>
+                        <div class="btn-status">
+                            <button type="submit" name="admin_submit" value="add_room">Добавить</button>
+                            <div class="status"><!-- status_add_room --></div>
+                        </div>
+                    </fieldset>
+				</form>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<!-- Форма удаления сотрудника -->
+                <form method="post">
+                    <fieldset>
+                        <legend>Удалить сотрудника</legend>
+                        <div class="field">
+                            <label for="deleteEmployeeID">ID сотрудника:</label>
+                            <input type="text" id="deleteEmployeeID" name="deleteEmployeeID" required
+                            placeholder="0000000" pattern="^\d{1,7}$">
+                        </div>
+                        <hr>
+                        <div class="btn-status">
+                            <button type="submit" name="admin_submit" value="del_employee">Удалить</button>
+                            <div class="status"><!-- status_del_employee --></div>
+                        </div>
+                    </fieldset>
+				</form>
+			</td>
+			<td>
+				<!-- Форма удаления помещения -->
+                <form method="post">
+                    <fieldset>
+                        <legend>Удалить помещение</legend>
+                        <div class="field">
+                            <label for="deleteRoomID">ID помещения:</label>
+                            <input type="text" id="deleteRoomID" name="deleteRoomID" required
+                            placeholder="0000000" pattern="^\d{1,7}$">
+                        </div>
+                        <hr>
+                        <div class="btn-status">
+                            <button type="submit" name="admin_submit" value="del_room">Удалить</button>
+                            <div class="status"><!-- status_del_room --></div>
+                        </div>
+                    </fieldset>
+				</form>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<!-- Форма выдачи доступпа -->
+                <form method="post">
+                    <fieldset>
+                        <legend>Выдать доступ сотруднику</legend>
+                        <div class="field">
+                            <label for="accessEmployeeID">ID сотрудника:</label>
+                            <input type="text" id="accessEmployeeID" name="accessEmployeeID" required
+                            placeholder="0000000" pattern="^\d{1,7}$">
+                        </div>
+                        <div class="field">
+                            <label for="accessRoomID">ID помещения:</label>
+                            <input type="text" id="accessRoomID" name="accessRoomID" required
+                            placeholder="0000000" pattern="^\d{1,7}$">
+                        </div>
+                        <hr>
+                        <div class="btn-status">
+                            <button type="submit" name="admin_submit" value="grant_access">Выдать доступ</button>
+                            <div class="status"><!-- status_grant_access --></div>
+                        </div>
+                    </fieldset>
+				</form>
+			</td>
+			<td>
+				<!-- Форма отзыва доступа -->
+                <form method="post">
+                    <fieldset>
+                        <legend>Отозвать доступ у сотрудника</legend>
+                        <div class="field">
+                            <label for="revokeEmployeeID">ID сотрудника:</label>
+                            <input type="text" id="revokeEmployeeID" name="revokeEmployeeID" required
+                            placeholder="0000000" pattern="^\d{1,7}$">
+                        </div>
+                        <div class="field">
+                            <label for="revokeRoomID">ID помещения:</label>
+                            <input type="text" id="revokeRoomID" name="revokeRoomID" required
+                            placeholder="0000000" pattern="^\d{1,7}$">
+                        </div>
+                        <hr>
+                        <div class="btn-status">
+                            <button type="submit" name="admin_submit" value="revoke_access">Отозвать доступ</button>
+                            <div class="status"><!-- status_revoke_access --></div>
+                        </div>
+                    </fieldset>
+				</form>
+			</td>
+		</tr>
+	</table>
+</body>
+
+</html>

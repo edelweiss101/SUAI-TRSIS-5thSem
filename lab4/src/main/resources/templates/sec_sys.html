@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="_csrf" content="${_csrf.token}" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" content="${_csrf.parameterName}" th:content="${_csrf.parameterName}" />
+
+    <title>Система безопасности предприятия</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet" />
+
+    <link href="../static/css/sec_sys.css" th:href="@{css/sec_sys.css}" rel="stylesheet" />
+
+    <script src="../static/js/jquery-3.7.1.slim.min.js" th:src="@{js/jquery-3.7.1.slim.min.js}"></script>
+    <script src="../static/js/angular.min.js" th:src="@{js/angular.min.js}"></script>
+</head>
+
+<body ng-app="SecSysApp">
+    <header>
+        <div sec:authorize="isAnonymous()">
+            <form name="loginForm" th:action="@{/login}">
+                <button class="login-button">Вход</button>
+            </form>
+        </div>
+
+        <div sec:authorize="isAuthenticated()">
+            <form name="logoutForm" th:action="@{/logout}">
+                <button class="logout-button">Выход</button>
+            </form>
+        </div>
+
+        <h1>Система безопасности предприятия</h1>
+    </header>
+
+    <div class="input">
+        <table>
+            <tr>
+                <!-- Форма добавления сотрудника -->
+                <td>
+                    <div ng-controller="EmployeeController">
+                        <form name="newEmployeeForm">
+                            <fieldset th:disabled="${!#authorization.expression('isAuthenticated()')}">
+                                <legend>Добавить/изменить сотрудника</legend>
+                                <div class="field">
+                                    <label for="employeeID">ID:</label>
+                                    <input type="text" id="employeeID" name="employeeID" ng-model="newEmployee.id"
+                                        required placeholder="12345" pattern="^\d{1,5}$" />
+                                </div>
+                                <div class="field">
+                                    <label for="employeeName">Имя:</label>
+                                    <input type="text" id="employeeName" name="employeeName" ng-model="newEmployee.name"
+                                        required pattern="^[a-zA-Zа-яА-Я]+([\s\-][a-zA-Zа-яА-Я]+)*$" />
+                                </div>
+                                <div class="field">
+                                    <label for="employeeDepartment">Отдел:</label>
+                                    <input type="text" id="employeeDepartment" name="employeeDepartment"
+                                        ng-model="newEmployee.department" required
+                                        pattern="^[a-zA-Zа-яА-Я\d]+([\s\-][a-zA-Zа-яА-Я\d]+)*$" />
+                                </div>
+                                <div class="field">
+                                    <label for="employeePosition">Должность:</label>
+                                    <input type="text" id="employeePosition" name="employeePosition"
+                                        ng-model="newEmployee.position" required
+                                        pattern="^[a-zA-Zа-яА-Я\d]+([\s\-][a-zA-Zа-яА-Я\d]+)*$" />
+                                </div>
+                                <hr />
+                                <div class="status-container">
+                                    <button type="submit" name="admin_submit" value="add_employee"
+                                        ng-click="addEmployee(newEmployee, newEmployeeForm)">Добавить</button>
+                                    <div class="status" ng-bind="employee_add_status">{{employee_add_status}}</div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+                <!-- Форма добавления помещения -->
+                <td>
+                    <div ng-controller="RoomController">
+                        <form name="newRoomForm">
+                            <fieldset th:disabled="${!#authorization.expression('isAuthenticated()')}">
+                                <legend>Добавить/изменить помещение</legend>
+                                <div class="field">
+                                    <label for="roomID">ID:</label>
+                                    <input type="text" id="roomID" name="roomID" ng-model="newRoom.id" required
+                                        placeholder="12345" pattern="^\d{1,5}$" />
+                                </div>
+                                <div class="field">
+                                    <label for="roomName">Название:</label>
+                                    <input type="text" id="roomName" name="roomName" ng-model="newRoom.name" required
+                                        pattern="^[a-zA-Zа-яА-Я\d]+([\s\-][a-zA-Zа-яА-Я\d]+)*$" />
+                                </div>
+                                <div class="field">
+                                    <label for="roomDepartment">Отдел:</label>
+                                    <input type="text" id="roomDepartment" name="roomDepartment"
+                                        ng-model="newRoom.department" required
+                                        pattern="^[a-zA-Zа-яА-Я\d]+([\s\-][a-zA-Zа-яА-Я\d]+)*$" />
+                                </div>
+                                <div class="field">
+                                    <label for="roomCapacity">Вместимость:</label>
+                                    <input type="text" id="roomCapacity" name="roomCapacity" ng-model="newRoom.capacity"
+                                        required pattern="^\d+$" />
+                                </div>
+                                <hr />
+                                <div class="status-container">
+                                    <button type="submit" name="admin_submit" value="add_room"
+                                        ng-click="addRoom(newRoom, newRoomForm)">Добавить</button>
+                                    <div class="status" ng-bind="room_add_status">{{room_add_status}}</div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <!-- Форма выдачи доступпа -->
+                <td>
+                    <div ng-controller="AccessController">
+                        <form name="grantAccessForm">
+                            <fieldset th:disabled="${!#authorization.expression('isAuthenticated()')}">
+                                <legend>Выдать доступ сотруднику</legend>
+                                <div class="field">
+                                    <label for="accessEmployeeID">ID сотрудника:</label>
+                                    <input type="text" id="accessEmployeeID" name="accessEmployeeID" required
+                                        ng-model="e_id_g" placeholder="12345" pattern="^\d{1,5}$" />
+                                </div>
+                                <div class="field">
+                                    <label for="accessRoomID">ID помещения:</label>
+                                    <input type="text" id="accessRoomID" name="accessRoomID" ng-model="r_id_g" required
+                                        placeholder="12345" pattern="^\d{1,5}$" />
+                                </div>
+                                <hr />
+                                <div class="status-container">
+                                    <button type="submit" name="admin_submit" value="grant_access"
+                                        ng-click="grantAccess(e_id_g, r_id_g)">Выдать доступ</button>
+                                    <div class="status" ng-bind="grant_status">{{grant_status}}</div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+                <!-- Форма отзыва доступа -->
+                <td>
+                    <div ng-controller="AccessController">
+                        <form name="revokeAccessForm">
+                            <fieldset th:disabled="${!#authorization.expression('isAuthenticated()')}">
+                                <legend>Отозвать доступ у сотрудника</legend>
+                                <div class="field">
+                                    <label for="revokeEmployeeID">ID сотрудника:</label>
+                                    <input type="text" id="revokeEmployeeID" name="revokeEmployeeID" required
+                                        ng-model="e_id_r" placeholder="12345" pattern="^\d{1,5}$" />
+                                </div>
+                                <div class="field">
+                                    <label for="revokeRoomID">ID помещения:</label>
+                                    <input type="text" id="revokeRoomID" name="revokeRoomID" required ng-model="r_id_r"
+                                        placeholder="12345" pattern="^\d{1,5}$" />
+                                </div>
+                                <hr />
+                                <div class="status-container">
+                                    <button type="submit" name="admin_submit" value="revoke_access"
+                                        ng-click="revokeAccess(e_id_r, r_id_r)">Отозвать доступ</button>
+                                    <div class="status" ng-bind="revoke_status">{{revoke_status}}</div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <!-- Форма проверки доступпа -->
+                <td colspan="2">
+                    <div ng-controller="AccessController">
+                        <form name="checkAccessForm">
+                            <fieldset th:disabled="${!#authorization.expression('isAuthenticated()')}"
+                                class="check-access-fs">
+                                <legend>Проверить доступ сотрудника</legend>
+                                <div class="check-access-input">
+                                    <div class="field">
+                                        <label for="checkEmployeeID">ID сотрудника:</label>
+                                        <input type="text" id="checkEmployeeID" name="checkEmployeeID" required
+                                            ng-model="e_id_c" placeholder="12345" pattern="^\d{1,5}$" />
+                                    </div>
+                                    <div class="field">
+                                        <label for="checkRoomID">ID помещения:</label>
+                                        <input type="text" id="checkRoomID" name="checkRoomID" required
+                                            ng-model="r_id_c" placeholder="12345" pattern="^\d{1,5}$" />
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="status-container">
+                                    <button type="submit" name="user_submit" value="check_access"
+                                        ng-click="checkAccess(e_id_c, r_id_c)">Проверить доступ</button>
+                                    <div class="status" ng-bind="check_status">{{check_status}}</div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="output">
+        <!-- Таблица сотрудников -->
+        <td>
+            <div class="output-table">
+                <table ng-controller="EmployeeController">
+                    <caption>Сотрудники</caption>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Имя</th>
+                            <th>Отдел</th>
+                            <th>Должность</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody ng-controller="getEmployees">
+                        <tr ng-repeat="employee in getEmployeesList()">
+                            <td>{{employee.id}}</td>
+                            <td>{{employee.name}}</td>
+                            <td>{{employee.department}}</td>
+                            <td>{{employee.position}}</td>
+                            <td>
+                                <button class="del-btn" ng-click="deleteEmployee(employee.id)">-</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </td>
+        <!-- Таблица помещений -->
+        <td>
+            <div class="output-table">
+                <table ng-controller="RoomController">
+                    <caption>Помещения</caption>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Отдел</th>
+                            <th>Вместимость</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody ng-controller="getRooms">
+                        <tr ng-repeat="room in getRoomsList()">
+                            <td>{{room.id}}</td>
+                            <td>{{room.name}}</td>
+                            <td>{{room.department}}</td>
+                            <td>{{room.capacity}}</td>
+                            <td>
+                                <button class="del-btn" ng-click="deleteRoom(room.id)">-</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </td>
+    </div>
+
+    <script src="../static/js/sec_sys.js" th:src="@{js/sec_sys.js}"></script>
+</body>
+
+</html>
