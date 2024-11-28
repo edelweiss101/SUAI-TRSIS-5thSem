@@ -1,0 +1,119 @@
+databaseChangeLog:
+  - changeSet:
+      id: init-database
+      author: savelev.v.m
+      preConditions:
+        - onFail: HALT
+        - or:
+            - not:
+                tableExists:
+                  tableName: EMPLOYEE
+            - not:
+                tableExists:
+                  tableName: ROOM
+            - not:
+                tableExists:
+                  tableName: ACCESS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: EMPLOYEE_PKEY
+                  name: EMPLOYEE_ID
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: EMPLOYEE_NAME
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: EMPLOYEE_DEPARTMENT
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: EMPLOYEE_POSITION
+                  type: VARCHAR(255)
+            tableName: EMPLOYEE
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: ROOM_PKEY
+                  name: ROOM_ID
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: ROOM_NAME
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: ROOM_DEPARTMENT
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: ROOM_CAPACITY
+                  type: BIGINT
+            tableName: ROOM
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: ACCESS_PKEY
+                  name: ACC_EMPLOYEE
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: ACCESS_PKEY
+                  name: ACC_ROOM
+                  type: BIGINT
+            tableName: ACCESS
+        -  addForeignKeyConstraint:
+            baseColumnNames:  ACC_EMPLOYEE
+            baseTableName:  ACCESS
+            constraintName:  FK_ACCESS_TO_EMPLOYEE
+            referencedColumnNames:  EMPLOYEE_ID
+            referencedTableName:  EMPLOYEE
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseColumnNames: ACC_ROOM
+            baseTableName: ACCESS
+            constraintName: FK_ACCESS_TO_ROOM
+            referencedColumnNames: ROOM_ID
+            referencedTableName: ROOM
+            onDelete: CASCADE
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: users_pkey
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: login
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: pass_hash
+                  type: VARCHAR(255)
+            tableName: users
